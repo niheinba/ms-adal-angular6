@@ -9,11 +9,17 @@ import * as adalLib from 'adal-angular';
 export class MsAdalAngular6Service {
   private context: adal.AuthenticationContext;
 
-  constructor(@Inject('adalConfig') private adalConfig: any) {
+  constructor(@Inject('adalConfig') private adalConfig: any, delayInit: boolean = false) {
     if (typeof adalConfig === 'function') {
       this.adalConfig = adalConfig();
     } 
     this.context = adalLib.inject(this.adalConfig);
+    if (!delayInit) {
+      this.handleCallback();
+    }
+  }
+  
+  public initLogin(): void {
     this.handleCallback();
   }
 
